@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-function App() {
+const Products = () => {
+  const [products, setProducts] = useState([]);
+
+  let { id } = useParams();
+
+  useEffect(() => {
+    fetch('https://dummyjson.com/products')
+      .then((response) => response.json())
+      .then((data) => setProducts(data.products));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {products.map((product) => (
+        <div key={product.id}>
+          <h4>{product.title}</h4>
+          <img src={product.images[1]} alt={product.title} />
+          
+        </div>
+      ))}
     </div>
   );
-}
+};
 
-export default App;
+export default Products;
